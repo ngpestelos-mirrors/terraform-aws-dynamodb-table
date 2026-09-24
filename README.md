@@ -56,7 +56,6 @@ Users of this Terraform module can create multiple similar resources by using [`
 Users of Terragrunt can achieve similar results by using modules provided in the [wrappers](https://github.com/terraform-aws-modules/terraform-aws-dynamodb-table/tree/master/wrappers) directory, if they prefer to reduce amount of configuration files.
 
 <!-- BEGIN_KNOWN_LIMITATIONS -->
-
 ## Known limitations (Terraform/OpenTofu, not this module)
 
 A few requests come up again and again and cannot be implemented by this
@@ -68,9 +67,10 @@ has been open since 2018,
 [opentofu/opentofu#1329](https://github.com/opentofu/opentofu/issues/1329) is
 the same request for OpenTofu.
 
-- **DynamoDB read and write capacity reverts on every plan** - Native option:
-  switch the table to `PAY_PER_REQUEST` billing. Otherwise fork and add
-  `ignore_changes = [read_capacity, write_capacity]`.
+- **DynamoDB read and write capacity reverts on every plan** - Native options:
+  switch the table to `PAY_PER_REQUEST` billing, or set
+  `autoscaling_enabled = true` (an existing table moves to a new state address,
+  so add a `moved` block).
 - **terraform destroy deleted a DynamoDB table** - Native option: set
   `deletion_protection_enabled = true` and turn on point-in-time recovery, both
   of which this module already exposes.
@@ -91,7 +91,6 @@ diff without an account, open this module in the
 
 Disclosure: written by this module's maintainer, who also builds
 [compliance.tf](https://compliance.tf/?utm_source=github&utm_medium=readme&utm_campaign=known-limitations).
-
 <!-- END_KNOWN_LIMITATIONS -->
 
 ## Examples
